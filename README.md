@@ -17,11 +17,11 @@ pip install torch torchvision
 ```
 ### Reproducing the paper's results:
 #### Backpropagation
-`execute python3 src/backpropagation/main.py`
+execute `python3 src/backpropagation/main.py`
 
 #### NEAT
-`execute python3 src/neat/main.py`
+execute `python3 src/neat/main.py`
 
 #### Fixed topology
-`execute python3 src/fixed_topology/main.py`
+execute `python3 src/fixed_topology/main.py`
 
