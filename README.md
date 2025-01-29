@@ -9,6 +9,10 @@ The project follows a three-step approach:
 2. **Fixed-size Neural Network**: Next, we use an evolutionary algorithm to evolve the weights and biases of a fixed-size neural network.
 3. **NEAT Algorithm**: Finally, we employ the NEAT (NeuroEvolution of Augmenting Topologies) algorithm, which dynamically evolves both the architecture (shape) and the weights of the neural network.
 
+> **Important Note:**  
+> If you want to understand how the code works, check the Jupyter notebooks version, not the Python version.
+
+
 ### Requirements
 ```
 pip install neat-python
