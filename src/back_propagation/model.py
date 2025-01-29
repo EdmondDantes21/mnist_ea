@@ -33,15 +33,15 @@ class FeedForwardNN(nn.Module):
     def loss(self):
         return nn.CrossEntropyLoss() 
 
-    def train_model(self, train_loader, num_epochs=5):
+    def train_model(self, train_loader, val_loader, num_epochs=10):
         optimizer = self.optimizer()
         criterion = self.loss()
         self.train()  # Set the model to training mode
-        
+
         for epoch in range(num_epochs):
             running_loss = 0.0
+            # Training loop
             for inputs, labels in train_loader:
-                # total_in += 1
                 optimizer.zero_grad()  # Zero the gradients
                 
                 # Forward pass
@@ -50,15 +50,37 @@ class FeedForwardNN(nn.Module):
                 # Compute the loss
                 loss = criterion(outputs, labels)
                 
-                # Backward pass
+                # Backward pass 
                 loss.backward()
                 
                 # Optimize the model
                 optimizer.step()
                 
                 running_loss += loss.item()
-            # Print the loss for this epoch
-            print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {running_loss/len(train_loader):.4f}")
+
+            # Calculate average training loss for the epoch
+            avg_train_loss = running_loss / len(train_loader)
+
+            # Now compute validation loss
+            self.eval()  # Set the model to evaluation mode
+            val_loss = 0.0
+            with torch.no_grad():  # Disable gradient computation for validation
+                for inputs, labels in val_loader:
+                    # Forward pass (no backward pass)
+                    outputs = self(inputs)
+                    # Compute the validation loss
+                    loss = criterion(outputs, labels)
+                    val_loss += loss.item()
+            
+            # Calculate average validation loss for the epoch
+            avg_val_loss = val_loss / len(val_loader)
+
+            # Print the losses for this epoch
+            print(f"Epoch [{epoch+1}/{num_epochs}], "
+                f"Training Loss: {avg_train_loss:.4f}, "
+                f"Validation Loss: {avg_val_loss:.4f}")
+
+            self.train()  # Set the model back to training mode after validation
     
     def evaluate_model(self, test_loader):
         self.eval()  # Set the model to evaluation mode
